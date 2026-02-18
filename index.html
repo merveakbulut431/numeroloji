@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NUMEROLOJI — Para Enerjisi & Bolluk Sayıları</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-pale: #F5E6B8;
+    --black: #0A0A08;
+    --dark: #111109;
+    --dark2: #1A1A14;
+    --green-deep: #0D1F14;
+    --green-mid: #1B3A24;
+    --green-accent: #2A5C36;
+    --cream: #F0E6CC;
+    --text-muted: #8A7A55;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* NOISE TEXTURE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.4;
+  }
+
+  /* NAVIGATION */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    padding: 20px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(10,10,8,0.95), transparent);
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+  }
+
+  .nav-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, var(--green-deep) 0%, var(--black) 70%);
+    overflow: hidden;
+  }
+
+  .hero-bg-lines {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(201,168,76,0.03) 60px),
+      repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(201,168,76,0.03) 60px);
+  }
+
+  .hero-circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.08);
+    animation: pulse 8s ease-in-out infinite;
+  }
+
+  .hero-circle:nth-child(1) { width: 300px; height: 300px; animation-delay: 0s; }
+  .hero-circle:nth-child(2) { width: 500px; height: 500px; animation-delay: 1s; }
+  .hero-circle:nth-child(3) { width: 700px; height: 700px; animation-delay: 2s; }
+  .hero-circle:nth-child(4) { width: 900px; height: 900px; animation-delay: 3s; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.02); }
+  }
+
+  .hero-content {
+    text-align: center;
+    z-index: 2;
+    animation: fadeInUp 1.5s ease both;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    animation: fadeInUp 1.5s ease 0.2s both;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(4rem, 10vw, 8rem);
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    color: var(--cream);
+    margin-bottom: 8px;
+    animation: fadeInUp 1.5s ease 0.4s both;
+  }
+
+  .hero-title span {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    font-style: italic;
+    color: var(--text-muted);
+    margin-bottom: 48px;
+    animation: fadeInUp 1.5s ease 0.6s both;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    padding: 14px 48px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.4s;
+    animation: fadeInUp 1.5s ease 0.8s both;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .hero-cta:hover {
+    background: var(--gold);
+    color: var(--black);
+  }
+
+  .gold-divider {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 0 auto 60px;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 100px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .section-label::before {
+    content: '';
+    display: inline-block;
+    width: 30px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    color: var(--cream);
+  }
+
+  .section-title em {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  /* CALCULATOR SECTION */
+  .calculator-section {
+    background: linear-gradient(135deg, var(--green-deep) 0%, var(--dark) 100%);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 2px;
+    padding: 60px;
+    margin: 60px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .calculator-section::before {
+    content: '∞';
+    position: absolute;
+    right: -20px;
+    top: -40px;
+    font-size: 20rem;
+    color: rgba(201,168,76,0.03);
+    font-family: 'Cormorant Garamond', serif;
+    pointer-events: none;
+  }
+
+  .calc-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 40px;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+  }
+
+  .calc-tab {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 14px 28px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+
+  .calc-tab.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+
+  .calc-tab:hover { color: var(--gold-light); }
+
+  .calc-panel { display: none; }
+  .calc-panel.active { display: block; }
+
+  .input-group {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .input-field {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .input-field label {
+    display: block;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    font-family: 'Cinzel', serif;
+  }
+
+  .input-field input {
+    width: 100%;
+    background: rgba(201,168,76,0.05);
+    border: 1px solid rgba(201,168,76,0.2);
+    color: var(--cream);
+    padding: 14px 18px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  .input-field input:focus {
+    border-color: var(--gold);
+  }
+
+  .input-field input::placeholder { color: rgba(240,230,204,0.2); }
+
+  .calc-btn {
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+    color: var(--black);
+    border: none;
+    padding: 14px 40px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+  }
+
+  .calc-btn:hover {
+    background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-pale) 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 30px rgba(201,168,76,0.3);
+  }
+
+  .result-box {
+    display: none;
+    margin-top: 36px;
+    padding: 36px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(201,168,76,0.25);
+    position: relative;
+  }
+
+  .result-box.show { display: block; animation: fadeInUp 0.6s ease; }
+
+  .result-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .result-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .result-description {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: var(--cream);
+    font-style: italic;
+  }
+
+  .result-money-tip {
+    margin-top: 24px;
+    padding: 16px 20px;
+    background: rgba(42,92,54,0.3);
+    border-left: 3px solid var(--gold);
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: var(--cream);
+  }
+
+  .result-money-tip strong {
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* NUMBERS GRID */
+  .numbers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1px;
+    background: rgba(201,168,76,0.1);
+    margin-top: 48px;
+  }
+
+  .number-card {
+    background: var(--dark2);
+    padding: 36px 32px;
+    transition: all 0.4s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .number-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(42,92,54,0.3) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .number-card:hover::before { opacity: 1; }
+
+  .number-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .card-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem;
+    color: var(--gold);
+    font-weight: 300;
+    line-height: 1;
+    margin-bottom: 6px;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+  }
+
+  .number-card:hover .card-number { opacity: 1; }
+
+  .card-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .card-desc {
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: rgba(240,230,204,0.6);
+  }
+
+  .card-money-tag {
+    margin-top: 14px;
+    display: inline-block;
+    padding: 4px 12px;
+    background: rgba(42,92,54,0.4);
+    border: 1px solid rgba(42,92,54,0.8);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #6DBF85;
+    font-family: 'Cinzel', serif;
+  }
+
+  /* DAILY */
+  .daily-box {
+    background: linear-gradient(135deg, var(--green-deep) 0%, rgba(26,26,20,0.8) 100%);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-top: 48px;
+  }
+
+  .daily-box::after {
+    content: '✦';
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--gold);
+    font-size: 1.2rem;
+    opacity: 0.5;
+  }
+
+  .daily-date {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+
+  .daily-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 7rem;
+    color: var(--gold);
+    line-height: 1;
+    font-weight: 300;
+  }
+
+  .daily-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-style: italic;
+    color: var(--cream);
+    margin: 12px 0 24px;
+  }
+
+  .daily-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    line-height: 1.9;
+    color: rgba(240,230,204,0.75);
+    max-width: 600px;
+    margin: 0 auto 32px;
+  }
+
+  .daily-affirmation {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-style: italic;
+    color: var(--gold);
+    padding: 24px 32px;
+    border-top: 1px solid rgba(201,168,76,0.2);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 60px;
+    border-top: 1px solid rgba(201,168,76,0.1);
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+  }
+
+  footer .footer-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    section { padding: 60px 24px; }
+    .calculator-section { padding: 36px 24px; }
+    .calc-tabs { overflow-x: auto; }
+    .daily-number { font-size: 5rem; }
+    .hero-cta { padding: 12px 32px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">✦ NUMEROLOJI</a>
+  <ul class="nav-links">
+    <li><a href="#hesapla">Hesapla</a></li>
+    <li><a href="#sayilar">Sayılar</a></li>
+    <li><a href="#gunluk">Günlük</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-lines"></div>
+  <div class="hero-circle"></div>
+  <div class="hero-circle"></div>
+  <div class="hero-circle"></div>
+  <div class="hero-circle"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">✦ Para & Bolluk Numerolojisi ✦</p>
+    <h1 class="hero-title">Sayılar<br><span>Konuşuyor</span></h1>
+    <p class="hero-subtitle">Hayatının para enerjisini keşfet</p>
+    <a href="#hesapla" class="hero-cta">Analizine Başla</a>
+  </div>
+</div>
+
+<!-- CALCULATOR -->
+<section id="hesapla">
+  <p class="section-label">Kişisel Analiz</p>
+  <h2 class="section-title">Sayılarını <em>Hesapla</em></h2>
+  <div class="gold-divider"></div>
+
+  <div class="calculator-section">
+    <div class="calc-tabs">
+      <button class="calc-tab active" onclick="switchTab('yasam')">Yaşam Sayısı</button>
+      <button class="calc-tab" onclick="switchTab('isim')">İsim Analizi</button>
+    </div>
+
+    <!-- YAŞAM SAYISI -->
+    <div class="calc-panel active" id="panel-yasam">
+      <p style="font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--text-muted); margin-bottom:28px; font-size:1.05rem;">
+        Doğum tarihin, para ile ilişkini ve bolluk yolculuğunu ortaya koyar.
+      </p>
+      <div class="input-group">
+        <div class="input-field">
+          <label>Doğum Tarihi</label>
+          <input type="date" id="birthdate" placeholder="GG/AA/YYYY">
+        </div>
+      </div>
+      <button class="calc-btn" onclick="calcLifeNumber()">Yaşam Sayımı Hesapla</button>
+      <div class="result-box" id="life-result">
+        <div class="result-number" id="life-num"></div>
+        <div class="result-name" id="life-name"></div>
+        <div class="result-description" id="life-desc"></div>
+        <div class="result-money-tip" id="life-money"></div>
+      </div>
+    </div>
+
+    <!-- İSİM ANALİZİ -->
+    <div class="calc-panel" id="panel-isim">
+      <p style="font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--text-muted); margin-bottom:28px; font-size:1.05rem;">
+        İsmin taşıdığı titreşim, finansal enerjini şekillendirir.
+      </p>
+      <div class="input-group">
+        <div class="input-field">
+          <label>Adın</label>
+          <input type="text" id="firstname" placeholder="Adını gir">
+        </div>
+        <div class="input-field">
+          <label>Soyadın</label>
+          <input type="text" id="lastname" placeholder="Soyadını gir">
+        </div>
+      </div>
+      <button class="calc-btn" onclick="calcNameNumber()">İsmimi Analiz Et</button>
+      <div class="result-box" id="name-result">
+        <div class="result-number" id="name-num"></div>
+        <div class="result-name" id="name-label"></div>
+        <div class="result-description" id="name-desc"></div>
+        <div class="result-money-tip" id="name-money"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SAYILARIN ANLAMLARI -->
+<section id="sayilar" style="padding-top:20px;">
+  <p class="section-label">Sayıların Şifresi</p>
+  <h2 class="section-title">1'den 9'a <em>Para Enerjisi</em></h2>
+  <div class="gold-divider"></div>
+
+  <div class="numbers-grid">
+    <div class="number-card">
+      <div class="card-number">1</div>
+      <div class="card-title">Öncü & Lider</div>
+      <div class="card-desc">Kendi işini kurma, liderlik ve bağımsız kazanç enerjisi taşır. Para, inisiyatif alan kişinin yanındadır.</div>
+      <div class="card-money-tag">₺ Girişimci Enerjisi</div>
+    </div>
+    <div class="number-card">
+      <div class="card-number">2</div>
+      <div class="card-title">Ortaklık & Denge</div>
+      <div class="card-desc">İş birlikleri ve ortaklıklar üzerinden büyür. Finansal huzur, ilişkilerdeki dengeyle gelir.</div>
+      <div class="card-money-tag">₺ Ortaklık Serveti</div>
+    </div>
+    <div class="number-card">
+      <div class="card-number">3</div>
+      <div class="card-title">Yaratıcılık & İfade</div>
+      <div class="card-desc">Yaratıcı alanlar, sanat ve iletişimden para akar. Cömertlik serveti çeker.</div>
+      <div class="card-money-tag">₺ Yaratıcı Akış</div>
+    </div>
+    <div class="number-card">
+      <div class="card-number">4</div>
+      <div class="card-title">Disiplin & Bina</div>
+      <div class="card-desc">Sabır ve sistematik çalışmayla kalıcı servet kurar. Gayrimenkul ve uzun vadeli yatırımlarda güçlü.</div>
+      <div class="card-money-tag">₺ Kalıcı Servet</div>
+    </div>
+    <div class="number-card">
+      <div class="card-number">5</div>
+      <div class="card-title">Özgürlük & Değişim</div>
+      <div class="card-desc">Çok gelir kaynağı, seyahat ve değişken ortamlarda kazanç. Risk alarak büyür.</div>
+      <div class="card-money-tag">₺ Çoklu Gelir</div>
+    </div>
+    <div class="number-card">
+      <div class="card-number">6</div>
+      <div class="card-title">Hizmet & Güzellik</div>
+      <div class="card-desc">Başkalarına hizmet ederek bol kazanır. Güzellik, sağlık ve aile odaklı işler finansal refah getirir.</div>
+      <div class="card-money-tag">₺ Hizmet Bolluğu</div>
+    </div>
+    <div class="number-card">
+      <div class="card-number">7</div>
+      <div class="card-title">Bilgelik & Araştırma</div>
+      <div class="card-desc">Uzmanlık ve derin bilgisiyle para kazanır. Analiz, araştırma ve spiritüel alanlarda güçlü.</div>
+      <div class="card-money-tag">₺ Uzman Serveti</div>
+    </div>
+    <div class="number-card">
+      <div class="card-number">8</div>
+      <div class="card-title">Güç & Bolluk</div>
+      <div class="card-desc">Numerolojinin para sayısı. Büyük iş dünyası, finans ve güç pozisyonlarında doğal yetenek.</div>
+      <div class="card-money-tag">₺ Zenginlik Sayısı</div>
+    </div>
+    <div class="number-card">
+      <div class="card-number">9</div>
+      <div class="card-title">Evrensel & Lider</div>
+      <div class="card-desc">Verdikçe daha çok alır. Hayırseverlik ve büyük vizyonla gelen bolluk. Para insanlığa hizmet için gelir.</div>
+      <div class="card-money-tag">₺ Evrensel Bolluk</div>
+    </div>
+  </div>
+</section>
+
+<!-- GÜNLÜK NUMEROLOJI -->
+<section id="gunluk" style="padding-top: 20px;">
+  <p class="section-label">Günün Enerjisi</p>
+  <h2 class="section-title">Bugünün <em>Para Sayısı</em></h2>
+  <div class="gold-divider"></div>
+  <div class="daily-box" id="daily-box">
+    <div class="daily-date" id="daily-date"></div>
+    <div class="daily-number" id="daily-number"></div>
+    <div class="daily-title" id="daily-title"></div>
+    <div class="daily-text" id="daily-text"></div>
+    <div class="daily-affirmation" id="daily-affirmation"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">✦ NUMEROLOJI</div>
+  <p>Para enerjini sayılarla keşfet</p>
+  <p style="margin-top:16px; font-size:0.6rem; opacity:0.4;">© 2025 Numeroloji — Tüm hakları saklıdır</p>
+</footer>
+
+<script>
+  // TAB SWITCH
+  function switchTab(tab) {
+    document.querySelectorAll('.calc-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.calc-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + tab).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // NUMBER DATA
+  const numberData = {
+    1: {
+      name: "Öncü — Liderlik Enerjisi",
+      desc: "Sen doğanın en bağımsız finansal enerjisini taşıyorsun. Para, senin özgün yolunu takip eder. Kendi işini kurduğunda ya da liderlik pozisyonlarında olduğunda servet kapıları açılır.",
+      money: "💰 Para İpucu: Kimsenin yapmadığı şeyi yap. İnovasyon ve özgünlük senin altın madenin. Sabah rutinlerine finansal hedefleri ekle, 1 enerjisi netlik ister."
+    },
+    2: {
+      name: "Arabulucu — Ortaklık Enerjisi",
+      desc: "Finansal büyümen tek başına değil, güçlü ilişkilerle gelir. Doğru ortakları, doğru müşterileri çekme konusunda olağanüstü bir içgüdüye sahipsin.",
+      money: "💰 Para İpucu: En büyük fırsatların yakın çevrenden gelecek. Ağını genişlet, güven inşa et. 2 enerjisi sabır ister — aceleci kararlardan kaçın."
+    },
+    3: {
+      name: "Yaratıcı — İfade Enerjisi",
+      desc: "Yaratıcılığın ve iletişim güncün para mıknatısın. İnsanların seni görmesi ve duymasi, bolluğun anahtarı. Sanat, yazı, konuşma — bunlar zenginlik yollarındır.",
+      money: "💰 Para İpucu: Sosyal medya ve içerik üretimi senin için altın madeni. Görünür ol, sesini duyur. Cömert ol — 3 enerjisi vereni bol bol geri döner."
+    },
+    4: {
+      name: "İnşacı — Disiplin Enerjisi",
+      desc: "Sen kalıcı servetin mimarısın. Anlık kazançlar değil, sağlam temeller üzerine kurulu finansal yapılar seni büyütür. Gayrimenkul ve uzun vadeli yatırımlar senin için güçlü.",
+      money: "💰 Para İpucu: Bütçe yap, sistematik tasarruf et. Her ay düzenli yatırım yap. 4 enerjisi tutarlılık ister — küçük ama düzenli adımlar büyük servet yaratır."
+    },
+    5: {
+      name: "Özgür Ruh — Değişim Enerjisi",
+      desc: "Tek bir gelir kaynağıyla sınırlı kalamazsın — çok kanallı gelir senin doğanla uyumlu. Değişim ve macera, beraberinde finansal fırsatlar getirir.",
+      money: "💰 Para İpucu: Farklı gelir kaynakları oluştur. Seyahat, yeni insanlar, yeni fikirler — bunlar fırsatlarla dolu. 5 enerjisi risk alır ve kazanır."
+    },
+    6: {
+      name: "Bakıcı — Hizmet Enerjisi",
+      desc: "Para sana başkalarına hizmet ettiğinde gelir. Güzellik, sağlık, eğitim veya aile odaklı işlerde doğal bir zenginleşme potansiyelin var.",
+      money: "💰 Para İpucu: Hizmetin ne kadar derin ve kaliteli olursa, kazancın o kadar büyük. Ev, aile ve güzelliğe yatırım yap. 6 enerjisi kalite ister."
+    },
+    7: {
+      name: "Bilge — Derin Analiz Enerjisi",
+      desc: "Uzmanlığın ve bilgin en büyük servettir. Araştırma, analiz ve derin bilgiye dayalı kariyer yolları sana büyük kazançlar getirir.",
+      money: "💰 Para İpucu: Uzmanlaş ve bu uzmanlığı sat. Psikoloji, finans, spiritualite veya akademik alanlarda güçsün. 7 enerjisi kaliteyi niceliğe tercih eder."
+    },
+    8: {
+      name: "Güç Oyuncusu — Bolluk Enerjisi",
+      desc: "Sen numerolojinin para sayısısın. Finans dünyası, büyük iş, yönetim ve güç pozisyonları senin için biçilmiş kaftan. Servet senin doğal titreşimindir.",
+      money: "💰 Para İpucu: Büyük düşün, büyük hedefler koy. Küçük oyunlarda vakit kaybetme. 8 enerjisi güç ve kontrol sever — finansal özgürlük senin hakkın."
+    },
+    9: {
+      name: "Evrensel — Bolluk Akışı",
+      desc: "Verdikçe daha çok alırsın — bu senin kaderin. Hayırseverlik, büyük vizyon ve insanlığa hizmet, sana olağanüstü bolluğu açar.",
+      money: "💰 Para İpucu: Para sıkıştırılmamalı, akmalı. Cömertliğin ne kadar büyükse, dönüşü o kadar büyük olur. 9 enerjisi bırakmayı ve güvenmeyi öğretir."
+    },
+    11: {
+      name: "Aydınlanmış — Master Enerji",
+      desc: "Usta sayısı. Sezgini parayı gelirken fark edebilir. Spiritualite ve iş dünyasını birleştirdiğinde olağanüstü sonuçlar alırsın.",
+      money: "💰 Para İpucu: Sezgini dinle — iş fırsatlarında içgüdüne güven. Spirituel rehberlik, koçluk veya ilham verici işlerde güçsün."
+    },
+    22: {
+      name: "Usta İnşacı — Master Enerji",
+      desc: "Kalıcı, büyük eserler bırakacak birisin. Büyük kurumlar, projeler ve sistemler kurma enerjisi taşıyorsun. Potansiyelin sınırsız.",
+      money: "💰 Para İpucu: Küçük şeyler için zaman harcama. Sen büyük projelere yaratıldın. Miras bırakan işler yap — 22 dünya üzerinde iz bırakır."
+    },
+    33: {
+      name: "Usta Öğretmen — Master Enerji",
+      desc: "Şifa ve öğretme enerjisi taşıyorsun. İnsanlara ilham vererek, öğreterek ve iyileştirerek büyük bir bolluk yaratırsın.",
+      money: "💰 Para İpucu: Öğret, ilham ver, iyileştir. Bu alandaki işler sana hem anlam hem de bolluk getirir. 33 cömertliğin en yüce halidir."
+    }
+  };
+
+  // LIFE NUMBER CALCULATOR
+  function reduceToSingle(n) {
+    if (n === 11 || n === 22 || n === 33) return n;
+    if (n < 10) return n;
+    return reduceToSingle(n.toString().split('').reduce((a, b) => a + parseInt(b), 0));
+  }
+
+  function calcLifeNumber() {
+    const dateInput = document.getElementById('birthdate').value;
+    if (!dateInput) {
+      alert('Lütfen doğum tarihini gir!');
+      return;
+    }
+    const parts = dateInput.split('-');
+    const day = parseInt(parts[2]);
+    const month = parseInt(parts[1]);
+    const year = parseInt(parts[0]);
+    const sum = day + month + year.toString().split('').reduce((a,b) => a + parseInt(b), 0);
+    const lifeNum = reduceToSingle(sum > 33 ? reduceToSingle(sum) : sum);
+    const data = numberData[lifeNum] || numberData[9];
+    
+    document.getElementById('life-num').textContent = lifeNum;
+    document.getElementById('life-name').textContent = data.name;
+    document.getElementById('life-desc').textContent = data.desc;
+    document.getElementById('life-money').innerHTML = '<strong>Para & Bolluk Rehberi</strong><br>' + data.money;
+    document.getElementById('life-result').classList.add('show');
+    document.getElementById('life-result').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  // NAME NUMBER CALCULATOR (Pythagorean)
+  const pythagorean = {
+    'A':1,'B':2,'C':3,'D':4,'E':5,'F':6,'G':7,'H':8,'I':9,
+    'J':1,'K':2,'L':3,'M':4,'N':5,'O':6,'P':7,'Q':8,'R':9,
+    'S':1,'T':2,'U':3,'V':4,'W':5,'X':6,'Y':7,'Z':8,
+    'Ç':3,'Ğ':7,'İ':9,'Ö':6,'Ş':1,'Ü':3
+  };
+
+  function calcNameNumber() {
+    const first = document.getElementById('firstname').value.toUpperCase().trim();
+    const last = document.getElementById('lastname').value.toUpperCase().trim();
+    const fullName = (first + last).replace(/\s/g, '');
+    
+    if (!first) {
+      alert('Lütfen adını gir!');
+      return;
+    }
+
+    let sum = 0;
+    for (let ch of fullName) {
+      if (pythagorean[ch]) sum += pythagorean[ch];
+    }
+
+    const nameNum = reduceToSingle(sum > 33 ? reduceToSingle(sum) : sum);
+    const data = numberData[nameNum] || numberData[9];
+
+    document.getElementById('name-num').textContent = nameNum;
+    document.getElementById('name-label').textContent = (first + (last ? ' ' + last : '')) + ' — ' + data.name;
+    document.getElementById('name-desc').textContent = data.desc;
+    document.getElementById('name-money').innerHTML = '<strong>İsim Enerjisi & Para</strong><br>' + data.money;
+    document.getElementById('name-result').classList.add('show');
+    document.getElementById('name-result').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  // DAILY NUMBER
+  function getDailyNumber() {
+    const today = new Date();
+    const day = today.getDate();
+    const month = today.getMonth() + 1;
+    const year = today.getFullYear();
+    const sum = day + month + year.toString().split('').reduce((a,b) => a + parseInt(b), 0);
+    return reduceToSingle(sum > 33 ? reduceToSingle(sum) : sum);
+  }
+
+  const dailyMessages = {
+    1: {
+      title: "Yeni Başlangıçlar Günü",
+      text: "Bugün finansal hayatında yeni bir sayfa açmak için mükemmel bir gün. Ertelediklerini başlat — ilk adım en değerlisi.",
+      affirmation: '"Para beni kolaylıkla bulur, ben de onu cömertçe akıtırım."'
+    },
+    2: {
+      title: "İş Birliği Günü",
+      text: "Bugün tek başına değil, birlikte harekete geç. Finansal ortaklıklar, ortak projeler ve güçlü ilişkiler bu günde çiçek açar.",
+      affirmation: '"Doğru insanlarla doğru fırsatlar hayatıma akar."'
+    },
+    3: {
+      title: "Bolluk İfade Günü",
+      text: "Bugün yaratıcılığını ve sesini kullan. Sosyal medya paylaşımları, sunum ve iletişim bu günde sana büyük fırsatlar getirebilir.",
+      affirmation: '"Yaratıcılığım para enerjimi artırır ve bolluğu çeker."'
+    },
+    4: {
+      title: "Temeller Oluşturma Günü",
+      text: "Bugün uzun vadeli planlama ve sistemlere odaklan. Bütçeni gözden geçir, yatırım planları yap. Temiz, düzenli adımlar servet inşa eder.",
+      affirmation: '"Finansal temelleri sağlam atıyorum ve servetim büyüyor."'
+    },
+    5: {
+      title: "Özgürlük ve Fırsat Günü",
+      text: "Bugün beklenmedik finansal fırsatlar kapını çalabilir. Esnek ol, yeni gelir kanallarına açık ol ve alışılmışın dışında düşün.",
+      affirmation: '"Her değişiklik bana yeni bolluk kapıları açar."'
+    },
+    6: {
+      title: "Hizmet ve Şükran Günü",
+      text: "Bugün başkalarına değer kattığında para enerjin en yüksek noktasına ulaşır. Hizmetini bir adım öteye taşı.",
+      affirmation: '"Hizmetim ne kadar değerliyse, kazancım o kadar büyüktür."'
+    },
+    7: {
+      title: "İçgözlem ve Strateji Günü",
+      text: "Bugün finansal kararlar almadan önce araştır ve derinleş. Sezgine güven — bugün görünmeyeni göreceksin.",
+      affirmation: '"Derin bilgim beni en doğru finansal kararlara götürür."'
+    },
+    8: {
+      title: "Güç ve Para Günü",
+      text: "Bugün para enerjisi zirveye çıkıyor. Büyük teklifler yap, görüşmeler ayarla, hedeflerine dönük güçlü adımlar at. 8 günü kararlılık ister.",
+      affirmation: '"Ben bolluğu hak ediyorum ve para bana kolaylıkla gelir."'
+    },
+    9: {
+      title: "Bolluk ve Tamamlanma Günü",
+      text: "Bugün eski finansal engelleri serbest bırak. Bağışçılık, minnettarlık ve bırakma enerjisi yeni bolluğun kapısını açar.",
+      affirmation: '"Bıraktıkça daha iyisi gelir. Bolluğa güveniyorum."'
+    }
+  };
+
+  function initDaily() {
+    const dailyNum = getDailyNumber();
+    const today = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const dateStr = today.toLocaleDateString('tr-TR', options);
+    
+    const msg = dailyMessages[dailyNum] || dailyMessages[9];
+    
+    document.getElementById('daily-date').textContent = dateStr.toUpperCase();
+    document.getElementById('daily-number').textContent = dailyNum;
+    document.getElementById('daily-title').textContent = msg.title;
+    document.getElementById('daily-text').textContent = msg.text;
+    document.getElementById('daily-affirmation').textContent = msg.affirmation;
+  }
+
+  // ENTER KEY SUPPORT
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      const activePanel = document.querySelector('.calc-panel.active');
+      if (activePanel.id === 'panel-yasam') calcLifeNumber();
+      else calcNameNumber();
+    }
+  });
+
+  // INIT
+  initDaily();
+</script>
+</body>
+</html>
