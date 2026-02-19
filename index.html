@@ -33,16 +33,18 @@
         html { scroll-behavior: smooth; }
         body { background: var(--black); color: var(--cream); font-family: 'Montserrat', sans-serif; line-height: 1.6; overflow-x: hidden; }
 
-        /* Arka Plan Noise */
+        /* Arka Plan Noise Efekti */
         body::before {
             content: ''; position: fixed; inset: 0;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
             pointer-events: none; z-index: 999;
         }
 
+        /* Navigasyon - Mobil Odaklı */
         nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 15px; background: rgba(4, 18, 8, 0.9); border-bottom: 1px solid var(--gold); backdrop-filter: blur(10px); text-align: center; }
         .nav-logo { font-family: 'Cinzel', serif; font-size: 1.2rem; letter-spacing: 0.3em; color: var(--gold); text-decoration: none; }
 
+        /* Hero Başlık Bölümü */
         .hero { min-height: 50vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 50% 50%, var(--emerald) 0%, var(--black) 100%); padding-top: 80px; text-align: center; }
         .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 7vw, 5rem); color: var(--gold); line-height: 1.1; font-weight: 300; }
         .hero-title span { display: block; font-size: 0.35em; color: var(--silver); letter-spacing: 0.4em; font-family: 'Cinzel'; margin-top: 15px; text-transform: uppercase; }
@@ -58,12 +60,14 @@
         .btn { width: 100%; padding: 20px; background: var(--gold); color: black; border: none; font-family: 'Cinzel'; font-weight: bold; cursor: pointer; letter-spacing: 0.3em; transition: 0.3s; font-size: 0.9rem; }
         .btn:hover { background: var(--gold-l); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(201,168,76,0.3); }
 
+        /* Analiz Sonuç Panelleri - Mobilde Okunabilirlik Artırıldı */
         .res-grid { display: none; grid-template-columns: 1fr; gap: 25px; margin-top: 50px; }
         .res-item { padding: 35px; border: 1px solid rgba(201,168,76,0.3); background: rgba(13, 38, 20, 0.3); border-left: 5px solid var(--gold); animation: fadeIn 1s ease; }
         .res-tag { font-family: 'Cinzel', serif; font-size: 0.75rem; color: var(--gold); margin-bottom: 20px; display: block; letter-spacing: 0.2em; border-bottom: 1px solid rgba(201,168,76,0.1); padding-bottom: 10px; }
         .res-num { font-family: 'Cormorant Garamond', serif; font-size: 6rem; color: var(--gold); line-height: 1; margin-bottom: 20px; text-align: center; text-shadow: 0 0 20px rgba(201,168,76,0.2); }
-        .res-txt { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; line-height: 1.8; color: var(--cream); font-style: italic; text-align: left; }
+        .res-txt { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; line-height: 1.8; color: var(--cream); font-style: italic; text-align: center; }
 
+        /* Sayı Sözlüğü Kartları */
         .dict-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; margin-top: 40px; }
         .dict-card { background: var(--black); border: 1px solid rgba(201,168,76,0.15); padding: 35px; text-align: center; transition: 0.4s; }
         .dict-card:hover { border-color: var(--gold); transform: translateY(-5px); }
@@ -84,7 +88,7 @@
 </head>
 <body>
 
-<nav><a class="nav-logo" href="#">ALGORITMO.OS</a></nav>
+<nav><a class="nav-logo" href="/">ALGORITMO.OS</a></nav>
 
 <header class="hero">
     <div class="hero-content">
@@ -100,12 +104,12 @@
         
         <div class="res-grid" id="nameRes">
             <div class="res-item" id="nameFocus">
-                <span class="res-tag">ANA KULVAR (SESSİZLER)</span>
+                <span class="res-tag">ANA KULVAR (SESSİZ HARFLER)</span>
                 <div class="res-num" id="anaN"></div>
                 <div class="res-txt" id="anaT"></div>
             </div>
             <div class="res-item">
-                <span class="res-tag">YAN KULVAR (SESLİLER)</span>
+                <span class="res-tag">YAN KULVAR (SESLİ HARFLER)</span>
                 <div class="res-num" id="yanN"></div>
                 <div class="res-txt" id="yanT"></div>
             </div>
@@ -149,8 +153,10 @@
 </section>
 
 <footer>
-    <a href="https://x.com/algoritmo_os" class="social-link" target="_blank">X (TWITTER)</a>
-    <a href="https://instagram.com/algoritmo.os" class="social-link" target="_blank">INSTAGRAM</a>
+    <div class="socials">
+        <a href="https://x.com/algoritmo_os" class="social-link" target="_blank">X (TWITTER)</a>
+        <a href="https://instagram.com/algoritmo.os" class="social-link" target="_blank">INSTAGRAM</a>
+    </div>
     <p style="font-size:0.7rem; color:var(--text-muted); margin-top:50px; letter-spacing:0.5em; text-transform:uppercase;">© 2026 ALGORITMO.OS — TÜM HAKLARI SAKLIDIR</p>
 </footer>
 
@@ -165,7 +171,7 @@
         5: { t: "ÖZGÜRLÜK & DEĞİŞİM", d: "Macerayı ve sınırsız merakı sembolize eder. Monotonluk size göre değildir. Değişim rüzgarlarını kazanca çevirebilen bir simyacı yapınız var." },
         6: { t: "SORUMLULUK & ŞİFA", d: "Huzurun ve toplumsal dengenin koruyucusudur. Başkalarına değer kattığınızda evren sizi maddi ve manevi olarak ödüllendirir." },
         7: { t: "BİLGELİK & ANALİZ", d: "Görünenin ötesindeki gerçeği arayan derin bir zihindir. Uzmanlığınız ve ruhsal derinliğiniz en büyük servetinizdir." },
-        8: { t: "GÜÇ & BOLLUK", d: "Maddi dünyanın mutlak hâkimidir. Numerolojinin en güçlü finansal sayısıdır. Büyük sistemleri yönetme gücü doğanızda var. Vizyonunuz ne kadar büyükse başarınız o kadar devasa olacaktır." },
+        8: { t: "GÜÇ & BOLLUK", d: "Maddi dünyanın mutlak hâkimidir. Numerolojinin en güçlü finansal sayısıdır. Büyük sistemleri yönetme gücü doğanızda var. Vizyonunuz ne kadar büyükse başarınız o kadar devasa olacaktır. Adaleti elden bırakmadığınız sürece güç sizinle kalacaktır." },
         9: { t: "VİZYONER & HÜMANİST", d: "Bilgeliğin zirvesidir. İnsanlığa hizmet ettiğinizde kozmik akış size sınırsız bir şekilde açılır. Verdikçe çoğalan bir enerjiye sahipsiniz." },
         11: { t: "MASTER: AYDINLANMIŞ", d: "Usta bir sezgi kanalıdır. Maddi dünyanın ötesindeki frekansları algılarsınız. İlham vermek sizin en yüksek finansal pusulanızdır." },
         19: { t: "KARMİK: GÜNEŞ", d: "Büyük engellerin ardından gelen mutlak zaferi temsil eder. Küllerinden doğmanın sembolüdür. Kendi otoritenizi elinize aldığınızda güneş hiç batmaz." },
@@ -179,7 +185,7 @@
         3: ["SOSYAL ENERJİ", "Bugün parlayış günü. Kendini ifade et, neşen kapıları açacak."],
         4: ["TEMEL ATMA", "Bugün disiplin vakti. Planlarını gözden geçir."],
         5: ["HIZLI DEĞİŞİM", "Bugün esneklik günü. Beklenmedik haberlere açık ol."],
-        6: ["ŞİFA VE HUZUR", "Bugün sevdiklerine odaklan. Huzur bolluğu çağırır."],
+        6: ["ŞİFA VE HUZUR", "Bugün sevdiklerine odaklan. Evindeki ve ruhundaki dengeyi sağla."],
         7: ["ZİHİNSEL DERİNLİK", "Bugün içe dönme günü. Aradığın cevaplar sessizliğinde."],
         8: ["BOLLUK VE AKSİYON", "Bugün güç günü. Finansal adımlar at."],
         9: ["TAMAMLANMA", "Bugün vedalaşma vakti. Yeniye yer aç."],
@@ -218,7 +224,7 @@
         const lifeR = red(lifeS);
         document.getElementById('lifeN').innerText = lifeR;
         document.getElementById('lifeT').innerText = mData[lifeR]?.d || "";
-        const yearS = day + month + 1; 
+        const yearS = day + month + 1; // 2+0+2+6 = 10 -> 1
         const yearR = red(yearS);
         document.getElementById('yearN').innerText = yearR;
         document.getElementById('yearT').innerText = mData[yearR]?.d || "";
