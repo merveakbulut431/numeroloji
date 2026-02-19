@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="4d97fc23-3f00-4543-81f6-53c1031a6f18" type="text/javascript" async></script>
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-89L8PKSJCS"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -38,11 +40,9 @@
             pointer-events: none; z-index: 999;
         }
 
-        /* Navigasyon */
         nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 15px; background: rgba(4, 18, 8, 0.9); border-bottom: 1px solid var(--gold); backdrop-filter: blur(10px); text-align: center; }
         .nav-logo { font-family: 'Cinzel', serif; font-size: 1.2rem; letter-spacing: 0.3em; color: var(--gold); text-decoration: none; }
 
-        /* Hero Alanı */
         .hero { min-height: 50vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 50% 50%, var(--emerald) 0%, var(--black) 100%); padding-top: 80px; text-align: center; }
         .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 7vw, 5rem); color: var(--gold); line-height: 1.1; font-weight: 300; }
         .hero-title span { display: block; font-size: 0.35em; color: var(--silver); letter-spacing: 0.4em; font-family: 'Cinzel'; margin-top: 15px; text-transform: uppercase; }
@@ -52,21 +52,18 @@
         
         h2 { font-family: 'Cinzel', serif; font-size: 1.1rem; color: var(--gold); letter-spacing: 0.3em; margin-bottom: 30px; text-align: center; border-bottom: 1px solid rgba(201,168,76,0.2); padding-bottom: 15px; }
 
-        /* Form Elemanları */
         input { width: 100%; background: rgba(13, 38, 20, 0.4); border: 1px solid var(--gold); color: white; padding: 18px; font-family: 'Cormorant Garamond'; font-size: 1.3rem; outline: none; margin-bottom: 25px; transition: 0.3s; }
         input:focus { background: rgba(201,168,76,0.1); border-color: var(--gold-l); }
         
         .btn { width: 100%; padding: 20px; background: var(--gold); color: black; border: none; font-family: 'Cinzel'; font-weight: bold; cursor: pointer; letter-spacing: 0.3em; transition: 0.3s; font-size: 0.9rem; }
         .btn:hover { background: var(--gold-l); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(201,168,76,0.3); }
 
-        /* Analiz Sonuçları */
         .res-grid { display: none; grid-template-columns: 1fr; gap: 25px; margin-top: 50px; }
         .res-item { padding: 35px; border: 1px solid rgba(201,168,76,0.3); background: rgba(13, 38, 20, 0.3); border-left: 5px solid var(--gold); animation: fadeIn 1s ease; }
         .res-tag { font-family: 'Cinzel', serif; font-size: 0.75rem; color: var(--gold); margin-bottom: 20px; display: block; letter-spacing: 0.2em; border-bottom: 1px solid rgba(201,168,76,0.1); padding-bottom: 10px; }
         .res-num { font-family: 'Cormorant Garamond', serif; font-size: 6rem; color: var(--gold); line-height: 1; margin-bottom: 20px; text-align: center; text-shadow: 0 0 20px rgba(201,168,76,0.2); }
         .res-txt { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; line-height: 1.8; color: var(--cream); font-style: italic; text-align: left; }
 
-        /* Sayı Sözlüğü */
         .dict-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; margin-top: 40px; }
         .dict-card { background: var(--black); border: 1px solid rgba(201,168,76,0.15); padding: 35px; text-align: center; transition: 0.4s; }
         .dict-card:hover { border-color: var(--gold); transform: translateY(-5px); }
